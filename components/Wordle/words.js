@@ -6,6 +6,7 @@ export const azWords = [
   "SUVAR",
   "QƏDİM",
   "SƏRİN",
+  "SINIQ",
   "BEYİN",
   "SINAQ",
   "DURNA",
