@@ -72,14 +72,31 @@ export const s = StyleSheet.create({
     borderRadius: 13,
     fontWeight: "bold",
   },
-  // flagContainer: {
-  //   paddingHorizontal: 13,
-  //   flexDirection: "row",
-  //   justifyContent: "flex-end",
-  //   gap: 13,
-  // },
-  // flag: {
-  //   width: 30,
-  //   height: 30,
-  // },
+  flagContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 13,
+    backgroundColor: "white",
+    borderRadius: 13,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  flag: {
+    width: 30,
+    height: 30,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
 });

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Modal,
 } from "react-native";
 import { s } from "./Wordle.style";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -34,6 +35,18 @@ const ruKeys = {
   lineThree: ["з", "х", "ц", "в", "б", "н", "м"],
 };
 
+const keyLang = {
+  az: azKeys,
+  en: enKeys,
+  ru: ruKeys,
+};
+
+const wordsLang = {
+  az: azWords,
+  en: enWords,
+  // ru: ,
+};
+
 const Wordle = () => {
   const [lines, setLines] = useState(
     Array(6)
@@ -49,14 +62,18 @@ const Wordle = () => {
   const [btnStatus, setBtnStatus] = useState({ status: "SUBMIT", show: false });
   const inputRefs = useRef([]);
   const [word, setWord] = useState("");
+  const [langModalVisible, setLangModalVisible] = useState(true);
+  const [lang, setLang] = useState("az");
 
-  useEffect(() => {
-    startNewGame();
-  }, []);
+  function chooseLang(language) {
+    setLang(language);
+    setLangModalVisible(false);
+    startNewGame(language);
+  }
 
-  const startNewGame = () => {
-    const randomIndex = Math.floor(Math.random() * azWords.length);
-    setWord(azWords[randomIndex]);
+  const startNewGame = (language) => {
+    const randomIndex = Math.floor(Math.random() * wordsLang[language].length);
+    setWord(wordsLang[language][randomIndex]);
     setLines(
       Array(6)
         .fill("")
@@ -106,11 +123,11 @@ const Wordle = () => {
 
     if (word === txt.join("")) {
       Alert.alert("You won!", "Congratulations!", [
-        { text: "OK", onPress: startNewGame },
+        { text: "OK", onPress: () => setLangModalVisible(true) },
       ]);
     } else if (currentLine === 5) {
       Alert.alert("You lost!", `The word was: ${word}`, [
-        { text: "Try Again", onPress: startNewGame },
+        { text: "Try Again", onPress: () => setLangModalVisible(true) },
       ]);
     }
   };
@@ -139,11 +156,14 @@ const Wordle = () => {
       currentInputs[currentIndex] = key;
       updateLineState(currentInputs);
 
-      if (currentIndex === 4 && azWords.includes(currentInputs.join(""))) {
+      if (
+        currentIndex === 4 &&
+        wordsLang[lang].includes(currentInputs.join(""))
+      ) {
         setBtnStatus({ status: "SUBMIT", show: true });
       } else if (currentIndex !== 4) {
         setBtnStatus({ status: "SUBMIT", show: false });
-      } else if (!azWords.includes(currentInputs.join(""))) {
+      } else if (!wordsLang[lang].includes(currentInputs.join(""))) {
         setBtnStatus({ status: "NOT A WORD", show: false });
       }
 
@@ -184,9 +204,9 @@ const Wordle = () => {
   };
 
   const renderKeyboard = () => {
-    return Object.keys(azKeys).map((key, rowIndex) => (
+    return Object.keys(keyLang[lang]).map((key, rowIndex) => (
       <View key={rowIndex} style={s.keyboardRow}>
-        {azKeys[key].map((letter, index) => (
+        {keyLang[lang][key].map((letter, index) => (
           <TouchableOpacity
             style={s.keyboardBtn}
             key={index}
@@ -211,17 +231,6 @@ const Wordle = () => {
 
   return (
     <View style={s.container}>
-      {/* <View style={s.flagContainer}>
-        <TouchableOpacity>
-          <Image style={s.flag} source={azFlag} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image style={s.flag} source={enFlag} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image style={s.flag} source={ruFlag} />
-        </TouchableOpacity>
-      </View> */}
       <View style={s.inputContainer}>{renderInputs()}</View>
       <View style={s.keyboardContainer}>
         {renderKeyboard()}
@@ -240,6 +249,29 @@ const Wordle = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={langModalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setLangModalVisible(!langModalVisible);
+        }}
+      >
+        <View style={s.modalContainer}>
+          <View style={s.flagContainer}>
+            <TouchableOpacity onPress={() => chooseLang("az")}>
+              <Image style={s.flag} source={azFlag} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => chooseLang("en")}>
+              <Image style={s.flag} source={enFlag} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => chooseLang("ru")}>
+              <Image style={s.flag} source={ruFlag} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
