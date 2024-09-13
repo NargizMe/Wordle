@@ -25,16 +25,20 @@ export const s = StyleSheet.create({
     borderColor: "white",
     textAlign: "center",
     color: "white",
+    textTransform: "capitalize",
   },
   keyboardContainer: {
     padding: 10,
     // backgroundColor: "#ddd",
-    flexDirection: "row",
+    // flexDirection: "row",
+    alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "space-around",
     gap: 10,
   },
   keyboardRow: {
+    width: "100%",
+    justifyContent: "center",
     flexDirection: "row",
     gap: 4,
   },
@@ -42,7 +46,7 @@ export const s = StyleSheet.create({
     backgroundColor: "white",
     color: "black",
     borderRadius: 3,
-    width: 30,
+    width: 27,
     alignItems: "center",
   },
   keyboardDelBtn: {
@@ -68,4 +72,14 @@ export const s = StyleSheet.create({
     borderRadius: 13,
     fontWeight: "bold",
   },
+  // flagContainer: {
+  //   paddingHorizontal: 13,
+  //   flexDirection: "row",
+  //   justifyContent: "flex-end",
+  //   gap: 13,
+  // },
+  // flag: {
+  //   width: 30,
+  //   height: 30,
+  // },
 });

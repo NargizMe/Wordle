@@ -1,19 +1,37 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, Text, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from "react-native";
 import { s } from "./Wordle.style";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { azWords } from "./words";
+import { enWords } from "./words";
+import enFlag from "../../assets/uk.png";
+import ruFlag from "../../assets/russia.png";
+import azFlag from "../../assets/azerbaijan.png";
 
 const azKeys = {
-  lineOne: ["Q", "Ü", "E", "R", "T", "Y", "U", "İ", "O", "P", "Ö", "Ğ"],
-  lineTwo: ["A", "S", "D", "F", "G", "H", "J", "K", "L", "I", "Ə"],
-  lineThree: ["Z", "X", "C", "V", "B", "N", "M", "Ç", "Ş"],
+  lineOne: ["q", "ü", "e", "r", "t", "y", "u", "i", "o", "p", "ö", "ğ"],
+  lineTwo: ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ı", "ə"],
+  lineThree: ["z", "x", "c", "v", "b", "n", "m", "ç", "ş"],
 };
 
 const enKeys = {
-  lineOne: ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-  lineTwo: ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-  lineThree: ["Z", "X", "C", "V", "B", "N", "M"],
+  lineOne: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+  lineTwo: ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+  lineThree: ["z", "x", "c", "v", "b", "n", "m"],
+};
+
+const ruKeys = {
+  lineZero: ["ё", "ъ"],
+  lineOne: ["я", "ш", "е", "р", "т", "ы", "у", "и", "о", "п", "ю", "щ", "э"],
+  lineTwo: ["а", "с", "д", "ф", "г", "ч", "й", "к", "л", "ь", "ж"],
+  lineThree: ["з", "х", "ц", "в", "б", "н", "м"],
 };
 
 const Wordle = () => {
@@ -54,12 +72,12 @@ const Wordle = () => {
   };
 
   const checkWord = (txt) => {
-    console.log(word);
-
     let newColors = [...colors];
     const wordLetters = word.split("");
     const txtLetters = [...txt];
     const matchedIndices = [];
+    console.log("word", word);
+    console.log("txtLetters", txtLetters);
 
     // First pass: mark correct letters in the correct position as green
     txt.forEach((letter, index) => {
@@ -132,6 +150,8 @@ const Wordle = () => {
       if (currentIndex < currentInputs.length - 1) {
         inputRefs.current[currentLine][currentIndex + 1].focus();
       }
+      console.log("currentInputs.join()", currentInputs.join(""));
+      console.log("word", word);
     }
   };
 
@@ -191,6 +211,17 @@ const Wordle = () => {
 
   return (
     <View style={s.container}>
+      {/* <View style={s.flagContainer}>
+        <TouchableOpacity>
+          <Image style={s.flag} source={azFlag} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image style={s.flag} source={enFlag} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image style={s.flag} source={ruFlag} />
+        </TouchableOpacity>
+      </View> */}
       <View style={s.inputContainer}>{renderInputs()}</View>
       <View style={s.keyboardContainer}>
         {renderKeyboard()}
